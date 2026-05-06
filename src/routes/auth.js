@@ -6,4 +6,5 @@ router.post('/seed', seedAdmin)
 router.post('/admin/login', adminLogin)
 router.post('/premise/login', premiseLogin)
 
+
 module.exports = router
