@@ -21,7 +21,7 @@ model Premise {
   id                  Int        @id @default(autoincrement())
   type                String
   name                String
-  registration_no     String
+  registration_no     String?
   state               String
   district            String
   address             String
