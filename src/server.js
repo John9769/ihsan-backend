@@ -1,7 +1,6 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
-require('dotenv').config()
 
 const authRoutes = require('./routes/auth')
 const premisesRoutes = require('./routes/premises')
@@ -22,7 +21,7 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true)
     } else {
-      console.log('CORS BLOCKED — request origin:', JSON.stringify(origin), '| allowed:', allowedOrigins)
+      console.log('CORS BLOCKED:', origin)
       callback(new Error('Not allowed by CORS'))
     }
   },
