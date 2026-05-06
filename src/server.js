@@ -10,8 +10,22 @@ const donationsRoutes = require('./routes/donations')
 
 const app = express()
 
+const allowedOrigins = [
+  (process.env.FRONTEND_URL || '').trim(),
+  'http://localhost:3000'
+].filter(Boolean)
+
+console.log('CORS allowed origins:', allowedOrigins)
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      console.log('CORS BLOCKED — request origin:', JSON.stringify(origin), '| allowed:', allowedOrigins)
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
   credentials: true
 }))
 
