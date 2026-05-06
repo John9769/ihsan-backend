@@ -1,6 +1,5 @@
 const express = require('express')
 const cors = require('cors')
-const helmet = require('helmet')
 const morgan = require('morgan')
 require('dotenv').config()
 
@@ -11,11 +10,11 @@ const donationsRoutes = require('./routes/donations')
 
 const app = express()
 
-app.use(helmet())
 app.use(cors({
   origin: ['http://localhost:3000', 'https://ihsan-frontend.vercel.app'],
   credentials: true
 }))
+
 app.use(morgan('dev'))
 app.use(express.json())
 
