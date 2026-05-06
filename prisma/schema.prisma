@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  password_hash String
+  role          String   @default("SUPER_ADMIN")
+  created_at    DateTime @default(now())
+
+  @@map("users")
+}
+
+model Premise {
+  id                  Int        @id @default(autoincrement())
+  type                String
+  name                String
+  registration_no     String
+  state               String
+  district            String
+  address             String
+  phone               String
+  email               String     @unique
+  password_hash       String
+  bank_name           String
+  bank_account_no     String
+  bank_account_name   String
+  status              String     @default("PENDING")
+  created_at          DateTime   @default(now())
+  campaigns           Campaign[]
+
+  @@map("premises")
+}
+
+model Campaign {
+  id               Int        @id @default(autoincrement())
+  premise_id       Int
+  premise          Premise    @relation(fields: [premise_id], references: [id])
+  title            String
+  purpose          String
+  target_amount    Float
+  collected_amount Float      @default(0)
+  image_url        String?
+  start_date       DateTime
+  end_date         DateTime
+  status           String     @default("ACTIVE")
+  created_at       DateTime   @default(now())
+  donations        Donation[]
+
+  @@map("campaigns")
+}
+
+model Donation {
+  id             Int      @id @default(autoincrement())
+  campaign_id    Int
+  campaign       Campaign @relation(fields: [campaign_id], references: [id])
+  donor_name     String
+  donor_phone    String
+  donor_email    String?
+  amount_paid    Float
+  toyyibpay_fee  Float    @default(1.00)
+  platform_fee   Float    @default(0.75)
+  net_to_premise Float
+  payment_ref    String   @default("DEMO")
+  status         String   @default("PENDING")
+  created_at     DateTime @default(now())
+
+  @@map("donations")
+}
